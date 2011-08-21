@@ -1,0 +1,14 @@
+code still has some warnings with gcc4.5
+FIXME: remove for 1.7.10
+
+--- src/winsup/cygwin/Makefile.in	2010-09-28 09:49:31.000000000 -0500
++++ src/winsup/cygwin/Makefile.in	2011-08-20 23:12:43.804649300 -0500
+@@ -55,7 +55,7 @@ CC:=@CC@
+ # FIXME: Which is it, CC or CC_FOR_TARGET?
+ CC_FOR_TARGET:=$(CC)
+ CFLAGS=@CFLAGS@
+-override CFLAGS+=-MMD ${$(*F)_CFLAGS} -Werror -fmerge-constants -ftracer \
++override CFLAGS+=-MMD ${$(*F)_CFLAGS} -fmerge-constants -ftracer \
+   -mno-use-libstdc-wrappers $(CCEXTRA)
+ CXX=@CXX@
+ override CXXFLAGS=@CXXFLAGS@

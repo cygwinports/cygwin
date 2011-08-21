@@ -1,0 +1,48 @@
+===================================================================
+RCS file: /cvs/src/src/newlib/libc/include/process.h,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -u -r1.4 -r1.5
+--- src/newlib/libc/include/process.h	2002/06/11 02:26:43	1.4
++++ src/newlib/libc/include/process.h	2011/08/19 14:29:34	1.5
+@@ -1,4 +1,5 @@
+-/* process.h.  This file comes with MSDOS and WIN32 systems.  */
++/* process.h.  Define spawn family of functions as provided by Cygwin.
++   The original file of this name is a MS/DOS invention. */
+ 
+ #ifndef __PROCESS_H_
+ #define __PROCESS_H_
+@@ -7,15 +8,7 @@
+ extern "C" {
+ #endif
+ 
+-int execl(const char *path, const char *argv0, ...);
+-int execle(const char *path, const char *argv0, ... /*, char * const *envp */);
+-int execlp(const char *path, const char *argv0, ...);
+-int execlpe(const char *path, const char *argv0, ... /*, char * const *envp */);
+-
+-int execv(const char *path, char * const *argv);
+-int execve(const char *path, char * const *argv, char * const *envp);
+-int execvp(const char *path, char * const *argv);
+-int execvpe(const char *path, char * const *argv, char * const *envp);
++/* For the exec functions, include unistd.h. */
+ 
+ int spawnl(int mode, const char *path, const char *argv0, ...);
+ int spawnle(int mode, const char *path, const char *argv0, ... /*, char * const *envp */);
+===================================================================
+RCS file: /cvs/src/src/newlib/libc/include/sys/unistd.h,v
+retrieving revision 1.78
+retrieving revision 1.79
+diff -u -r1.78 -r1.79
+--- src/newlib/libc/include/sys/unistd.h	2011/07/20 01:14:50	1.78
++++ src/newlib/libc/include/sys/unistd.h	2011/08/19 14:29:34	1.79
+@@ -46,6 +46,9 @@
+ int     _EXFUN(execl, (const char *__path, const char *, ... ));
+ int     _EXFUN(execle, (const char *__path, const char *, ... ));
+ int     _EXFUN(execlp, (const char *__file, const char *, ... ));
++#if defined(__CYGWIN__)
++int     _EXFUN(execlpe, (const char *__file, const char *, ... ));
++#endif
+ int     _EXFUN(execv, (const char *__path, char * const __argv[] ));
+ int     _EXFUN(execve, (const char *__path, char * const __argv[], char * const __envp[] ));
+ int     _EXFUN(execvp, (const char *__file, char * const __argv[] ));
