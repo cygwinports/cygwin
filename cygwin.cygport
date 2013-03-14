@@ -1,0 +1,51 @@
+TOOLCHAIN_TARGET="native"
+CVS_URI=":pserver:anoncvs@cygwin.com:/cvs/src"
+CVS_MODULE="winsup"
+CVS_BRANCH="cygwin-${PV//\./_}-release"
+SRC_DIR="src"
+inherit cvs toolchain
+
+NAME="cygwin"
+VERSION=1.7.17
+RELEASE=1
+CATEGORY="Base"
+SUMMARY="The UNIX emulation engine"
+HOMEPAGE="http://cygwin.com/"
+
+RESTRICT="postinst-doc"
+
+cygwin_CONTENTS="--exclude=cygwin1.dbg etc/ usr/"
+PKG_IGNORE="usr/bin/cygwin1.dbg"
+
+src_compile() {
+	cd ${B}
+	cygconf
+	cygmake
+}
+
+src_install() {
+	cd ${B}
+	cyginstall tooldir=/usr gcc_tooldir=/usr -j1
+
+	insinto /usr/lib/debug/usr/bin
+	doins ${TOOLCHAIN_TARGET}/winsup/cygwin/cygwin1.dbg
+	dosym ../lib/debug/usr/bin/cygwin1.dbg /usr/bin/cygwin1.dbg
+
+	cd ${S}
+	docinto /${P}
+	dodoc winsup/COPYING winsup/CYGWIN_LICENSE COPYING.NEWLIB README
+
+	cd ${D}
+	rm -f usr/share/info/*
+	# provided by libiconv
+	rm -f usr/include/iconv.h
+	# provided by libncurses
+	rm -f usr/include/unctrl.h
+	# provided by mingw-runtime (in mingw32 sysroot)
+	rm -f usr/bin/mingwm10.dll
+	rm -fr usr/{include,lib}/mingw
+	rm -fr usr/share/doc/mingw-runtime/
+	rm -fr usr/share/man/manmingw/
+	# provided by w32api
+	rm -fr usr/{include,lib}/w32api
+}
