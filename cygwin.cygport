@@ -1,12 +1,12 @@
 TOOLCHAIN_TARGET="native"
-CVS_URI=":pserver:anoncvs@cygwin.com:/cvs/src"
-CVS_MODULE="winsup"
+CVS_URI="${SOURCEWARE_LOGIN-:pserver:anoncvs@cygwin.com}:/cvs/src"
+CVS_MODULE="cygwin"
 CVS_BRANCH="cygwin-${PV//\./_}-release"
 SRC_DIR="src"
 inherit cvs toolchain
 
 NAME="cygwin"
-VERSION=1.7.17
+VERSION=1.7.20
 RELEASE=1
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
@@ -41,11 +41,4 @@ src_install() {
 	rm -f usr/include/iconv.h
 	# provided by libncurses
 	rm -f usr/include/unctrl.h
-	# provided by mingw-runtime (in mingw32 sysroot)
-	rm -f usr/bin/mingwm10.dll
-	rm -fr usr/{include,lib}/mingw
-	rm -fr usr/share/doc/mingw-runtime/
-	rm -fr usr/share/man/manmingw/
-	# provided by w32api
-	rm -fr usr/{include,lib}/w32api
 }
