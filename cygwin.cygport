@@ -41,4 +41,6 @@ src_install() {
 	rm -f usr/include/iconv.h
 	# provided by libncurses
 	rm -f usr/include/unctrl.h
+	# provided by libtirpc
+	rm -fr usr/include/rpc/
 }
