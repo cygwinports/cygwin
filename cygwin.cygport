@@ -14,7 +14,10 @@ HOMEPAGE="http://cygwin.com/"
 
 RESTRICT="postinst-doc"
 
-cygwin_CONTENTS="--exclude=cygwin1.dbg etc/ usr/"
+PKG_NAMES="${NAME} ${NAME}-devel"
+cygwin_CONTENTS="--exclude=cygwin1.dbg etc/ usr/bin/ usr/sbin/ usr/share/"
+cygwin_devel_CATEGORY="Devel"
+cygwin_devel_CONTENTS="usr/include/ usr/lib/"
 PKG_IGNORE="usr/bin/cygwin1.dbg"
 
 src_compile() {
