@@ -6,7 +6,7 @@ SRC_DIR="src"
 inherit cvs toolchain
 
 NAME="cygwin"
-VERSION=1.7.32
+VERSION=1.7.33
 RELEASE=1
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
