@@ -1,12 +1,10 @@
 TOOLCHAIN_TARGET="native"
-CVS_URI="${SOURCEWARE_LOGIN-:pserver:anoncvs@cygwin.com}:/cvs/src"
-CVS_MODULE="cygwin"
-CVS_BRANCH="cygwin-${PV//\./_}-release"
-SRC_DIR="src"
-inherit cvs toolchain
+GIT_URI="git://sourceware.org/git/newlib-cygwin.git"
+GIT_TAG="cygwin-${PV//\./_}-release"
+inherit git toolchain
 
 NAME="cygwin"
-VERSION=1.7.35
+VERSION=2.0.0
 RELEASE=1
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
