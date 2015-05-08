@@ -1,14 +1,5 @@
 sdesc: "The UNIX emulation engine"
 category: Base
 requires: base-cygwin
-noautodep: _update-info-dir
+noautodep: _update-info-dir _autorebase
 autodep: .*
-message: new-cygwin-version "This is the first time you've installed Cygwin 1.7.x.
-Please be advised that this is a major release.
-If you have not done so already, please check out
-the documentation at http://cygwin.com/ to see how
-the upgrade could potentially affect any existing
-Cygwin installation.
-
-If this is the first time you've installed Cygwin on
-this system then you can ignore this message."

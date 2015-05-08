@@ -4,7 +4,7 @@ GIT_TAG="cygwin-${PV//\./_}-release"
 inherit git toolchain
 
 NAME="cygwin"
-VERSION=2.0.1
+VERSION=2.0.2
 RELEASE=1
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
@@ -15,12 +15,15 @@ RESTRICT="postinst-doc"
 PKG_NAMES="${NAME} ${NAME}-devel"
 cygwin_CONTENTS="--exclude=cygwin1.dbg etc/ usr/bin/ usr/sbin/ usr/share/"
 cygwin_devel_CATEGORY="Devel"
+cygwin_devel_SUMMARY="Core development files"
+cygwin_devel_DESCRIPTION="Core development files required to build Cygwin packages"
 cygwin_devel_CONTENTS="usr/include/ usr/lib/"
 PKG_IGNORE="usr/bin/cygwin1.dbg"
 
 src_compile() {
 	cd ${B}
-	cygconf
+	cygconf --docdir=/usr/share/doc/cygwin-${VERSION} \
+		--htmldir=\${docdir}/html
 	cygmake
 }
 
