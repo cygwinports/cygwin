@@ -4,27 +4,50 @@ GIT_TAG="cygwin-${PV//\./_}-release"
 inherit git toolchain
 
 NAME="cygwin"
-VERSION=2.0.2
-RELEASE=1
+VERSION=2.9.0
+RELEASE=2
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
 HOMEPAGE="http://cygwin.com/"
 
 RESTRICT="postinst-doc"
 
-PKG_NAMES="${NAME} ${NAME}-devel"
-cygwin_CONTENTS="--exclude=cygwin1.dbg etc/ usr/bin/ usr/sbin/ usr/share/"
+PKG_NAMES="${NAME} ${NAME}-devel ${NAME}-doc"
+cygwin_REQUIRES="base-cygwin"
+cygwin_CONTENTS="--exclude=cygwin1.dbg
+	etc/defaults/
+	usr/bin/
+	usr/sbin/
+	usr/share/cygwin/
+	usr/share/doc/Cygwin/
+"
 cygwin_devel_CATEGORY="Devel"
 cygwin_devel_SUMMARY="Core development files"
 cygwin_devel_DESCRIPTION="Core development files required to build Cygwin packages"
 cygwin_devel_CONTENTS="usr/include/ usr/lib/"
+cygwin_doc_CATEGORY="Doc"
+cygwin_doc_SUMMARY="Cygwin-specific documentation, including man pages"
+cygwin_doc_DESCRIPTION="Documentation for Cygwin and newlib, including man
+pages and texinfo files."
+cygwin_doc_CONTENTS="
+	etc/postinstall/
+	etc/preremove/
+	usr/share/doc/cygwin-doc/
+	usr/share/doc/newlib/
+	usr/share/info/
+	usr/share/man/
+"
+
 PKG_IGNORE="usr/bin/cygwin1.dbg"
 
 src_compile() {
 	cd ${B}
-	cygconf --docdir=/usr/share/doc/cygwin-${VERSION} \
+	cygconf --docdir=/usr/share/doc/cygwin-doc \
 		--htmldir=\${docdir}/html
 	cygmake
+
+	cd ${B}/${CHOST}/newlib
+	cygmake info man
 }
 
 src_install() {
@@ -35,12 +58,21 @@ src_install() {
 	doins ${TOOLCHAIN_TARGET}/winsup/cygwin/cygwin1.dbg
 	dosym ../lib/debug/usr/bin/cygwin1.dbg /usr/bin/cygwin1.dbg
 
+	cd ${B}/${CHOST}/newlib
+	cygmake DESTDIR=${D} install-info install-man
+
+	cd ${B}/${CHOST}/winsup/doc
+	cygmake DESTDIR=${D} install-etc
+
 	cd ${S}
-	docinto /${P}
-	dodoc winsup/COPYING winsup/CYGWIN_LICENSE COPYING.NEWLIB README
+	docinto /cygwin-doc
+	dodoc winsup/COPYING winsup/CYGWIN_LICENSE README
+
+	docinto /newlib
+	dodoc COPYING.NEWLIB newlib/HOWTO newlib/NEWS newlib/README
 
 	cd ${D}
-	rm -f usr/share/info/*
+	rm -f usr/share/info/{configure,standards}.info
 	# provided by libiconv
 	rm -f usr/include/iconv.h
 	# provided by libncurses
