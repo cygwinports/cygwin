@@ -5,10 +5,15 @@ inherit git toolchain
 
 NAME="cygwin"
 VERSION=2.9.0
-RELEASE=2
+RELEASE=3
 CATEGORY="Base"
 SUMMARY="The UNIX emulation engine"
 HOMEPAGE="http://cygwin.com/"
+
+PATCH_URI="
+	0001-Revert-cygwin-only-expose-dev-con-in-out-sole-when-s.patch
+	0002-cygwin-workaround-GCC-6-changes.patch
+"
 
 RESTRICT="postinst-doc"
 
@@ -37,8 +42,11 @@ cygwin_doc_CONTENTS="
 	usr/share/info/
 	usr/share/man/
 "
-
 PKG_IGNORE="usr/bin/cygwin1.dbg"
+
+DIFF_EXCLUDES="libc.info libm.info parser.out parsetab.py"
+
+REQUIRES_EXCLUDE_FROM="/usr/bin/*-config"
 
 src_compile() {
 	cd ${B}
